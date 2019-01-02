@@ -154,7 +154,7 @@ public class WeightedNode implements Comparable<WeightedNode> {
 	public int compareTo(WeightedNode o) {
 		int diff_cost = cost - o.cost;
 		if (diff_cost == 0)
-			return name.compareTo(o.name);
+			return -name.compareTo(o.name);
 		else
 			return -diff_cost;
 	}
