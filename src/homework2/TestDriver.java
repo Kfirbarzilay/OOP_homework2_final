@@ -4,15 +4,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-
-import homework2.Graph;
-import homework2.GraphNode;
-import homework2.Path;
-import homework2.PathFinder;
 import homework2.Utils.Result;
-import homework2.WeightedNode;
-import homework2.WeightedNodePath;
-import org.omg.PortableInterceptor.ServerRequestInfo;
+
 
 /**
  * This class implements a testing driver which reads test scripts
@@ -38,8 +31,7 @@ public class TestDriver {
 
 
 	/**
-	 * Executes the commands read from the input and writes results to the
-	 * output.
+	 * Executes the commands read from the input and writes results to the output.
 	 */
 	public void runTests() throws IOException {
 
@@ -95,9 +87,6 @@ public class TestDriver {
 			output.println("Exception: " + e.toString());
 		}
 	}
-
-
-
 
 	private void createGraph(List<String> arguments) {
 
@@ -285,7 +274,7 @@ public class TestDriver {
 		Iterator<String> iter = arguments.iterator();
 		graphName = iter.next();
 
-		// extract source arguments
+		// Extract source arguments
 		while (iter.hasNext()) {
 			String s = iter.next();
 			if (s.equals("->"))
@@ -293,7 +282,7 @@ public class TestDriver {
 			sourceArgs.add(s);
 		}
 
-		// extract destination arguments
+		// Extract destination arguments
 		while (iter.hasNext())
 			destArgs.add(iter.next());
 

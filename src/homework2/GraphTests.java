@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,9 +39,10 @@ public class GraphTests extends homework2.ScriptFileTests
 	Graph<WeightedNode> splitEnd;
 	Graph<WeightedNode> oneAfterAnother;
 	Graph<WeightedNode> graphTesting;
-	Graph<WeightedNode> clique;
+	Graph<WeightedNode> complicated;
 	Graph<WeightedNode> oneAfterAnother2Ways;
 	Graph<WeightedNode> noNodes;
+	Graph<WeightedNode> dfsGraph;
 
 
 	@Before 
@@ -52,9 +54,11 @@ public class GraphTests extends homework2.ScriptFileTests
 		splitEnd = new Graph<WeightedNode>("splitEnd");
 		oneAfterAnother = new Graph<WeightedNode>("oneAfterAnother");
 		graphTesting = new Graph<WeightedNode>("graphTesting");
-		clique = new Graph<WeightedNode>("clique");
+		complicated = new Graph<WeightedNode>("complicated");
 		oneAfterAnother2Ways = new Graph<WeightedNode>("oneAfterAnother2Ways");
 		noNodes = new Graph<WeightedNode>("noNodes");
+		dfsGraph = new Graph<WeightedNode>("dfsGraph");
+
 
 
 		for(int i=1; i<5; i++) {
@@ -111,18 +115,18 @@ public class GraphTests extends homework2.ScriptFileTests
 		graphTesting.addEdge("n5", "n6");
 		graphTesting.addEdge("n6", "n1");
 
-		clique.addNode(n1,"n1");
-		clique.addNode(n2,"n2");
-		clique.addEdge("n1", "n2");
-		clique.addNode(n3,"n3");
-		clique.addEdge("n2", "n3");
-		clique.addEdge("n3", "n1");
-		clique.addNode(n4,"n4");
-		clique.addNode(n5,"n5");
-		clique.addEdge("n4", "n5");
-		clique.addNode(n6,"n6");
-		clique.addEdge("n5", "n6");
-		clique.addEdge("n6", "n1");
+		complicated.addNode(n1,"n1");
+		complicated.addNode(n2,"n2");
+		complicated.addEdge("n1", "n2");
+		complicated.addNode(n3,"n3");
+		complicated.addEdge("n2", "n3");
+		complicated.addEdge("n3", "n1");
+		complicated.addNode(n4,"n4");
+		complicated.addNode(n5,"n5");
+		complicated.addEdge("n4", "n5");
+		complicated.addNode(n6,"n6");
+		complicated.addEdge("n5", "n6");
+		complicated.addEdge("n6", "n1");
 
 		oneAfterAnother2Ways.addNode(n1, "n1");
 		oneAfterAnother2Ways.addNode(n2, "n2");
@@ -131,6 +135,14 @@ public class GraphTests extends homework2.ScriptFileTests
 		oneAfterAnother2Ways.addNode(n3, "n3");
 		oneAfterAnother2Ways.addEdge("n2", "n3");
 		oneAfterAnother2Ways.addEdge("n3", "n2");
+
+		dfsGraph.addNode(n1, "n1");
+		dfsGraph.addNode(n2, "n2");
+		dfsGraph.addNode(n3, "n3");
+		dfsGraph.addEdge("n1", "n2");
+		dfsGraph.addEdge("n1", "n3");
+		dfsGraph.addEdge("n2", "n3");
+		dfsGraph.addEdge("n3", "n3");
 
 		// List of source
 		sourceList.get(0).add("n2");
@@ -149,7 +161,7 @@ public class GraphTests extends homework2.ScriptFileTests
 	@Test
 	public void createGraphTest(){
 		assertEquals(oneAfterAnother.getName(),"oneAfterAnother");
-		assertEquals(clique.getName(),"clique");
+		assertEquals(complicated.getName(),"complicated");
 		assertEquals(oneAfterAnother2Ways.getName(),"oneAfterAnother2Ways");
 		assertEquals(noNodes.getNumOfNodes(),0);
 		assertEquals(noNodes.getName(),"noNodes");
@@ -229,8 +241,49 @@ public class GraphTests extends homework2.ScriptFileTests
 		assertEquals(fathers2Sons2.getParentsString("n1"), String.format("the parents of %s in %s are:", "n1","fathers2Sons2"));
 		assertEquals(fathers2Sons2.getParentsString("n2"), String.format("the parents of %s in %s are: %s", "n2","fathers2Sons2","n1"));
 	}
-	
 
+	@Test
+	public void DfsAlgorithm(){
+		DfsAlgorithm myDfs = new DfsAlgorithm(dfsGraph, "n2");
+		myDfs.callDfs();
+
+		// Check number of back edges
+		assertEquals(n1.getBackEdgesNum(), (Integer) 0);
+		assertEquals(n2.getBackEdgesNum(), (Integer) 0);
+		assertEquals(n3.getBackEdgesNum(), (Integer) 1);
+
+		// Check colors
+		assertEquals(n1.getColor(), "White");
+		assertEquals(n2.getColor(), "Black");
+		assertEquals(n3.getColor(), "Black");
+
+		Iterator<GraphNode<WeightedNode>> initIter = dfsGraph.getNodes();
+
+		while (initIter.hasNext())
+		{
+			WeightedNode currNode = initIter.next().getNode();
+			currNode.setColor("White");
+			currNode.initNumofBackEdges();
+		}
+
+		// Check colors
+		assertEquals(n1.getColor(), "White");
+		assertEquals(n2.getColor(), "White");
+		assertEquals(n3.getColor(), "White");
+
+		myDfs = new DfsAlgorithm(dfsGraph, "n1");
+		myDfs.callDfs("n3");
+
+		// Check number of back edges
+		assertEquals(n1.getBackEdgesNum(), (Integer) 0);
+		assertEquals(n2.getBackEdgesNum(), (Integer) 0);
+		assertEquals(n3.getBackEdgesNum(), (Integer) 1);
+
+		// Check colors
+		assertEquals(n1.getColor(), "Grey");
+		assertEquals(n2.getColor(), "White");
+		assertEquals(n3.getColor(), "Grey");
+	}
 	
 }
 	

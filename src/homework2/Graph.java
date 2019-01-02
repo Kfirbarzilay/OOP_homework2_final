@@ -57,9 +57,7 @@ public class Graph<E> {
     }
     
     /**
-	 *Returns the num of nodes in the graph
-	 *
-	 *@return the num of nodes in the graph
+	 *@effect Returns the num of nodes in the graph
 	*/
 	  public int getNumOfNodes() {
 	  	checkRep();
@@ -68,9 +66,7 @@ public class Graph<E> {
 
 
 	/**
-	 *Returns a node in the graph by its name
-	 *
-	 *@return a node in the graph
+	 *@effect Returns a node in the graph by its name
 	*/
 	  public GraphNode getNodeByName(String s) {
 		checkRep();
@@ -79,19 +75,7 @@ public class Graph<E> {
 	    
     
     /**
-     * Adds a node to the graph. Nodes can be of any type.
-     * Newly added nodes must have a unique name that is not already present in the graph.
-     * When a nodeName that is already present in the graph is given then the method will fail
-     * and return itemAlreadyExists result(see Utils class for more details).
-     *
-     * @requires node != null , nodeName != all previous names
-     * 
-     * @modifies this: nodes, nodeNames
-     * 
      * @effects  Adds a new node to this graph. Adds its name to nodesNamesList in o(1).
-     * 
-     * @return itemAlreadyExists if the node already exists in the graph.
-     * 		   Success otherwise.
      */
    public Result addNode(E node,String nodeName) {
 	    checkRep();
@@ -110,19 +94,7 @@ public class Graph<E> {
     }
     
     /**
-     * Adds an edge to the graph. This is a directed weighted (nodes have weight not edges) graph thus edges have a direction Parent --> Child.
-     * if one of the nodes doesn't exist, or the edge already exists, the method will fail.
-     * No self edges addition allowed.
-     * @requires parentNodeName,childNodeName != null,
-     *            no self edges: parentNodeName != childNodeName
-	 *
-     * @modifies this: nodesNamesList ,childrenList
-     * 
      * @effects  this by Adding a new edge from parent to child to this graph.
-     * 
-     * @return itemDoesntExist if one of the nodes doesn't exist in the graph.
-     *         itemAlreadyExists if the edge already exists. 
-     *         Success otherwise.
      */
     public Result addEdge(String parentNodeStr, String childNodeStr) {
     	checkRep();
@@ -158,28 +130,24 @@ public class Graph<E> {
 
 	public Iterator<GraphNode<E>> getNodes()
 	{
-
 		return this.nodes.values().iterator();
 	}
+
 	/**
-	 * returns the children list of the node.
-	 * if the node doesn't exist in the graph, the method will return null.
-	 * param parentNodeName: the parent node
-	 * 
-	 * @return  ArrayList of child nodes
-	 * 			null if parentNodeName == null
+	 * @effect returns a list of children of a parent node.
+	 * Check if node exists in the graph, otherwise return null.
 	 */
-    public ArrayList<GraphNode<E>> getChildren(String parentNodeName){
+    public ArrayList<GraphNode<E>> getChildren(String parentNodeStr){
     	checkRep();
-    	assert parentNodeName != null;
+    	assert parentNodeStr != null;
     	// Check if node exists
-    	if(!this.nodes.containsKey(parentNodeName)){
+    	if(!this.nodes.containsKey(parentNodeStr)){
     		checkRep();
     		return null;
     	}
 
     	// Get node
-    	GraphNode<E> node = this.nodes.get(parentNodeName);
+    	GraphNode<E> node = this.nodes.get(parentNodeStr);
     	// Get the list of the children
     	ArrayList<GraphNode<E>> children = node.getChildren();
     	checkRep();
@@ -187,22 +155,19 @@ public class Graph<E> {
     }
     
     /** returns the parents list of the node.
-     * if the node doesn't exist in the graph, the method will return null.
-     *
-     * @return ArrayList of parent nodes
-     * 		   null if childNodeName == null
+     * @effect Check if node exists in the graph, otherwise return null.
      */
-    public ArrayList<GraphNode<E>> getParents(String childNodeName){
+    public ArrayList<GraphNode<E>> getParents(String childNodeStr){
     	checkRep();
-    	assert childNodeName != null;
+    	assert childNodeStr != null;
     	// check that the node exists it the graph
-    	if(!this.nodes.containsKey(childNodeName)){
+    	if(!this.nodes.containsKey(childNodeStr)){
     		checkRep();
     		return null;
     	}
 
     	// Get node
-    	GraphNode<E> node = this.nodes.get(childNodeName);
+    	GraphNode<E> node = this.nodes.get(childNodeStr);
 		// Get node parents
     	ArrayList<GraphNode<E>> parents = node.getParents();
     	checkRep();
@@ -210,35 +175,32 @@ public class Graph<E> {
     }
 
     /**
-     * Prints out the list of the nodes in the graph by alphabetical order of their names.
+     * @effect Prints out the list of the nodes in the graph by order of their names.
      */
     public String getNodesString() {
     	checkRep();
-    	ArrayList<String> list = new ArrayList<>(this.nodes.keySet());
-    	Collections.sort(list);
+    	ArrayList<String> arrayList = new ArrayList<>(this.nodes.keySet());
+    	Collections.sort(arrayList);
 
     	// Print graph
-    	String s = this.graphName +" contains:";
-    	for(String name : list){
-    		s += " " + name; 
+    	String str = this.graphName +" contains:";
+    	for(String name : arrayList){
+    		str += " " + name;
     	}
     	checkRep();
-    	return s;  	
+    	return str;
     }
 
 
     /**
-     * Prints out the list of the children of a node named parentNodeName in the graph by alphabetical order of their names.
-     * if the node doesn't exist in the graph, the method will fail.
-     * 
-     * @return null if the node doesnt exist.
-     * 		   String describing its children otherwise.
+     * @effect Prints a list of children of a parent node in the graph by alphabetical order of their names.
+     * Check if node exists in the graph, otherwise return null.
      */
-    public String getChildrenString(String parentNodeName) {
+    public String getChildrenString(String parentNodeStr) {
     	checkRep();
-    	assert parentNodeName != null;
+    	assert parentNodeStr != null;
     	// Get children of the parent
-    	ArrayList<GraphNode<E>> children = this.getChildren(parentNodeName);
+    	ArrayList<GraphNode<E>> children = this.getChildren(parentNodeStr);
     	if(children == null){
     		// Doesn't exist
     		checkRep();
@@ -250,7 +212,7 @@ public class Graph<E> {
     	Collections.sort(childrenSorted);
     	
     	// Print all the children in the right order
-    	String s = String.format("the children of %s in %s are:",parentNodeName,this.graphName);
+    	String s = String.format("the children of %s in %s are:",parentNodeStr,this.graphName);
     	for(GraphNode<E> child : childrenSorted){
     		s += " " + child.getName();
     	}
@@ -259,11 +221,8 @@ public class Graph<E> {
     }  
     
     /**
-     * Prints out the list of the parents of a node named childNodeName in the graph by alphabetical order of their names.
-     * if the node doesn't exist in the graph, the method will fail.
-     * 
-     * @return null if the node doesnt exist.
-     * 		   String describing its parents otherwise.
+     * @effect Prints a list of the parents of a child node in the graph by alphabetical order of their names.
+	 * Check if node exists in the graph, otherwise return null.     *
      */
     public String getParentsString(String childNodeName) {
     	checkRep();
@@ -289,12 +248,8 @@ public class Graph<E> {
     	return s;
     } 
     /**
-     * This method returns nodes from their names given
-     * 
-     * @requires sourceArgs != null valid node names in graph
-     * 
-     * @effects list of nodes corresponding to the list of names recieved
-     * */
+     * @effect Returns nodes from their names given
+     */
     
     public ArrayList<GraphNode<E>> getNodesFromNames(List<String> sourceArgs){
     	ArrayList<GraphNode<E>> nodes = new ArrayList<>();
@@ -307,7 +262,7 @@ public class Graph<E> {
     }
     
     /** 
-     * checks that the instance maintains the represantation invariant
+     * @effect checks that the instance maintains the RI
      */
     private void checkRep(){
     	assert this.graphName.length() > 0;

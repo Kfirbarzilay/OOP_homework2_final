@@ -2,6 +2,13 @@ package homework2;
 
 import java.util.*;
 
+
+/**
+ * This class implements a DFS algorith run on a graph. Id does not permits null values.
+ * DFS runs on weighted nodes.
+ * List holds the node names of the graph walk. The DFS walk the graph by giving it the graph and starting node
+ * and could get an end node so if it get the destination so the graph walk will end at the moment the algorithm find it.
+ */
 public class DfsAlgorithm {
 
     // List holds the path and will be printed at the end as the path from source to target (if target exists)
@@ -9,9 +16,19 @@ public class DfsAlgorithm {
 
     private Graph<WeightedNode> graph;
 
-    //private Path<WeightedNode,WeightedNodePath> path;
-
     private String startNodeStr;
+
+    // Representation Invariant:
+    // Assume the parameters are correct
+    // 1. graph != null
+    // 2. startNodStr != null
+
+    // Abstraction function:
+    // String graph - The graph to run DFS on
+    // LinkedList<String> list - List of the nodes name by the order the DRS runs
+    // startNodeStr - The name of the starting node that we start to run the algorithm on
+
+
 
     public DfsAlgorithm (Graph<WeightedNode> graph, String startNodeStr)
     {
