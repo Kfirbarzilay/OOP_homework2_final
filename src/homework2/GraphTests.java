@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -23,44 +22,47 @@ public class GraphTests extends homework2.ScriptFileTests
 	}
  
 	/***************************************************** WHITEBOX *******************************************/
-	
-	Graph<WeightedNode> empty;
-	Graph<WeightedNode> g1;
-	Graph<WeightedNode> twoFathersTwoSons;
-	Graph<WeightedNode> line;
-	Graph<WeightedNode> line2ways;
-	Graph<WeightedNode> fcComponents; // fully connected components
-	Graph<WeightedNode> findTestGraph;
-	WeightedNode n1;
-	WeightedNode n2; 
-	WeightedNode n3;
-	WeightedNode n4; 
-	WeightedNode n5; 
-	WeightedNode n6; 
 
-	ArrayList<List<String>> srcList;
-	ArrayList<List<String>> destList;
+	ArrayList<List<String>> sourceList;
+	ArrayList<List<String>> destinationList;
+
+	WeightedNode n1;
+	WeightedNode n2;
+	WeightedNode n3;
+	WeightedNode n4;
+	WeightedNode n5;
+	WeightedNode n6;
+
+
+	Graph<WeightedNode> fathers2Sons2;
+	Graph<WeightedNode> splitEnd;
+	Graph<WeightedNode> oneAfterAnother;
+	Graph<WeightedNode> graphTesting;
+	Graph<WeightedNode> clique;
+	Graph<WeightedNode> oneAfterAnother2Ways;
+	Graph<WeightedNode> noNodes;
+
+
 	@Before 
 	public void init(){
-		empty = new Graph<WeightedNode>("empty");
-		g1 = new Graph<WeightedNode>("g1");
-		twoFathersTwoSons = new Graph<WeightedNode>("twoFathersTwoSons");
-		line = new Graph<WeightedNode>("line");
-		line2ways = new Graph<WeightedNode>("line2ways");
-		fcComponents = new Graph<WeightedNode>("fcComponents"); // fully connected components
-		
-		findTestGraph = new Graph<WeightedNode>("findTestGraph");
-		
-		srcList    = new ArrayList<List<String>>();
-		destList   = new ArrayList<List<String>>();  
-		
+		sourceList = new ArrayList<List<String>>();
+		destinationList = new ArrayList<List<String>>();
+
+		fathers2Sons2 = new Graph<WeightedNode>("fathers2Sons2");
+		splitEnd = new Graph<WeightedNode>("splitEnd");
+		oneAfterAnother = new Graph<WeightedNode>("oneAfterAnother");
+		graphTesting = new Graph<WeightedNode>("graphTesting");
+		clique = new Graph<WeightedNode>("clique");
+		oneAfterAnother2Ways = new Graph<WeightedNode>("oneAfterAnother2Ways");
+		noNodes = new Graph<WeightedNode>("noNodes");
+
+
 		for(int i=1; i<5; i++) {
-			srcList.add(new ArrayList<String>());
-			destList.add(new ArrayList<String>());
+			sourceList.add(new ArrayList<String>());
+			destinationList.add(new ArrayList<String>());
 		}
-		    
-		
-		
+
+
 		n1 = new WeightedNode("n1",1);
 		n2 = new WeightedNode("n2",2);
 		n3 = new WeightedNode("n3",3);
@@ -68,174 +70,164 @@ public class GraphTests extends homework2.ScriptFileTests
 		n5 = new WeightedNode("n5",5);
 		n6 = new WeightedNode("n6",6);
 
-		 
-	    g1.addNode(n1, "n1");
-        g1.addNode(n2, "n2");
-        g1.addEdge("n1", "n2");
-        g1.addNode(n3, "n3");
-        g1.addEdge("n2", "n3");
-        g1.addNode(n4, "n4");
-        g1.addEdge("n3", "n4");
-        g1.addNode(n5, "n5");
-        g1.addNode(n6, "n6");
-        g1.addEdge("n4", "n5");
-        g1.addEdge("n4", "n6");
-        
-        twoFathersTwoSons.addNode(n1, "n1");
-        twoFathersTwoSons.addNode(n2, "n2");
-        twoFathersTwoSons.addNode(n3, "n3");
-        twoFathersTwoSons.addEdge("n1", "n2");
-        twoFathersTwoSons.addEdge("n1", "n3");
-        twoFathersTwoSons.addEdge("n2", "n3");
-		
-	    line.addNode(n1, "n1");
-	    line.addNode(n2, "n2");
-	    line.addNode(n3, "n3");
-	    line.addEdge("n1", "n2");
-	    line.addEdge("n2", "n3");
-	    
-	    line2ways.addNode(n1, "n1");
-	    line2ways.addNode(n2, "n2");
-	    line2ways.addNode(n3, "n3");
-	    line2ways.addEdge("n1", "n2");
-	    line2ways.addEdge("n2", "n1");
-	    line2ways.addEdge("n2", "n3");
-	    line2ways.addEdge("n3", "n2");
-	    
-	    fcComponents.addNode(n1,"n1");
-	    fcComponents.addNode(n2,"n2");
-	    fcComponents.addNode(n3,"n3");
-	    fcComponents.addNode(n4,"n4");
-	    fcComponents.addNode(n5,"n5");
-	    fcComponents.addNode(n6,"n6");
-	    fcComponents.addEdge("n1", "n2");
-	    fcComponents.addEdge("n2", "n3");
-	    fcComponents.addEdge("n3", "n1");
-	    fcComponents.addEdge("n4", "n5");
-	    fcComponents.addEdge("n5", "n6");
-	    fcComponents.addEdge("n6", "n1");
-	   
-	    findTestGraph.addNode(n1,"n1");
-	    findTestGraph.addNode(n2,"n2");
-	    findTestGraph.addNode(n3,"n3");
-	    findTestGraph.addNode(n4,"n4");
-	    findTestGraph.addNode(n5,"n5");
-	    findTestGraph.addNode(n6,"n6");
-	    findTestGraph.addEdge("n1", "n2");
-	    findTestGraph.addEdge("n2", "n3");
-	    findTestGraph.addEdge("n2", "n4");
-	    findTestGraph.addEdge("n3", "n5");
-	    findTestGraph.addEdge("n4", "n5");
-	    findTestGraph.addEdge("n5", "n6");
-	    findTestGraph.addEdge("n6", "n1");
-	    
-	    //srcList
-	    srcList.get(0).add("n2");  
-	    destList.get(0).add("n5");    
-	    srcList.get(1).add("n3");
-	    srcList.get(1).add("n2");
-	    destList.get(1).add("n5");    
-	    srcList.get(2).add("n4");  
-	    srcList.get(2).add("n2");
-	    destList.get(2).add("n1");    
-	    srcList.get(3).add("n2");  
-	    destList.get(3).add("n5");    
-	    destList.get(3).add("n1");         
+		fathers2Sons2.addNode(n1, "n1");
+		fathers2Sons2.addNode(n2, "n2");
+		fathers2Sons2.addNode(n3, "n3");
+		fathers2Sons2.addEdge("n1", "n2");
+		fathers2Sons2.addEdge("n1", "n3");
+		fathers2Sons2.addEdge("n2", "n3");
+
+		splitEnd.addNode(n1, "n1");
+		splitEnd.addNode(n2, "n2");
+		splitEnd.addNode(n3, "n3");
+		splitEnd.addNode(n4, "n4");
+		splitEnd.addNode(n5, "n5");
+		splitEnd.addNode(n6, "n6");
+		splitEnd.addEdge("n1", "n2");
+		splitEnd.addEdge("n2", "n3");
+		splitEnd.addEdge("n3", "n4");
+		splitEnd.addEdge("n4", "n5");
+		splitEnd.addEdge("n4", "n6");
+
+
+	    oneAfterAnother.addNode(n1, "n1");
+	    oneAfterAnother.addNode(n2, "n2");
+	    oneAfterAnother.addNode(n3, "n3");
+	    oneAfterAnother.addEdge("n1", "n2");
+	    oneAfterAnother.addEdge("n2", "n3");
+
+
+		graphTesting.addNode(n1,"n1");
+		graphTesting.addNode(n2,"n2");
+		graphTesting.addEdge("n1", "n2");
+		graphTesting.addNode(n3,"n3");
+		graphTesting.addEdge("n2", "n3");
+		graphTesting.addNode(n4,"n4");
+		graphTesting.addEdge("n2", "n4");
+		graphTesting.addNode(n5,"n5");
+		graphTesting.addEdge("n3", "n5");
+		graphTesting.addNode(n6,"n6");
+		graphTesting.addEdge("n4", "n5");
+		graphTesting.addEdge("n5", "n6");
+		graphTesting.addEdge("n6", "n1");
+
+		clique.addNode(n1,"n1");
+		clique.addNode(n2,"n2");
+		clique.addEdge("n1", "n2");
+		clique.addNode(n3,"n3");
+		clique.addEdge("n2", "n3");
+		clique.addEdge("n3", "n1");
+		clique.addNode(n4,"n4");
+		clique.addNode(n5,"n5");
+		clique.addEdge("n4", "n5");
+		clique.addNode(n6,"n6");
+		clique.addEdge("n5", "n6");
+		clique.addEdge("n6", "n1");
+
+		oneAfterAnother2Ways.addNode(n1, "n1");
+		oneAfterAnother2Ways.addNode(n2, "n2");
+		oneAfterAnother2Ways.addEdge("n1", "n2");
+		oneAfterAnother2Ways.addEdge("n2", "n1");
+		oneAfterAnother2Ways.addNode(n3, "n3");
+		oneAfterAnother2Ways.addEdge("n2", "n3");
+		oneAfterAnother2Ways.addEdge("n3", "n2");
+
+		// List of source
+		sourceList.get(0).add("n2");
+		destinationList.get(0).add("n5");
+	    sourceList.get(1).add("n3");
+	    sourceList.get(1).add("n2");
+	    destinationList.get(1).add("n5");
+	    sourceList.get(2).add("n4");
+	    sourceList.get(2).add("n2");
+	    destinationList.get(2).add("n1");
+	    sourceList.get(3).add("n2");
+	    destinationList.get(3).add("n5");
+	    destinationList.get(3).add("n1");
    }
 	
 	@Test
 	public void createGraphTest(){
-		assertEquals(line.getName(),"line");
-		assertEquals(line2ways.getName(),"line2ways");
-		assertEquals(fcComponents.getName(),"fcComponents");
-		
-		assertEquals(empty.getName(),"empty");
-		assertEquals(empty.getNumOfNodes(),0);
+		assertEquals(oneAfterAnother.getName(),"oneAfterAnother");
+		assertEquals(clique.getName(),"clique");
+		assertEquals(oneAfterAnother2Ways.getName(),"oneAfterAnother2Ways");
+		assertEquals(noNodes.getNumOfNodes(),0);
+		assertEquals(noNodes.getName(),"noNodes");
 	}
 	
 	@Test
 	public void addNodeTest(){
-		assertEquals(empty.addNode(n1, "n1"),Result.Success);
-		assertEquals(empty.getNumOfNodes(),1);
-		assertEquals(empty.getNodesString(),String.format("%s contains: %s", "empty","n1"));
+		assertEquals(noNodes.addNode(n1, "n1"),Result.Success);
+		assertEquals(noNodes.getNumOfNodes(),1);
+		assertEquals(noNodes.getNodesString(),String.format("%s contains: %s", "noNodes","n1"));
 		// check that the node still isn't connected to anything
-		assertEquals(empty.getChildrenString("n1"),String.format("the children of %s in %s are:", "n1","empty"));
-		assertEquals(empty.getParentsString("n1"),String.format("the parents of %s in %s are:", "n1","empty"));
-		
+		assertEquals(noNodes.getParentsString("n1"),String.format("the parents of %s in %s are:", "n1","noNodes"));
+		assertEquals(noNodes.getChildrenString("n1"),String.format("the children of %s in %s are:", "n1","noNodes"));
+
 		// fails
-		assertEquals(empty.addNode(n1, "n1"),Result.itemAlreadyExists);
-		assertEquals(empty.addNode(n2, "n1"),Result.itemAlreadyExists);
-		assertEquals(empty.getNumOfNodes(),1);
+		assertEquals(noNodes.getNumOfNodes(),1);
+		assertEquals(noNodes.addNode(n2, "n1"),Result.itemAlreadyExists);
+		assertEquals(noNodes.addNode(n1, "n1"),Result.itemAlreadyExists);
 		// check that the node still isn't connected to anything
-		assertEquals(empty.getChildrenString("n1"),String.format("the children of %s in %s are:", "n1","empty"));
-		assertEquals(empty.getParentsString("n1"),String.format("the parents of %s in %s are:", "n1","empty"));
+		assertEquals(noNodes.getParentsString("n1"),String.format("the parents of %s in %s are:", "n1","noNodes"));
+		assertEquals(noNodes.getChildrenString("n1"),String.format("the children of %s in %s are:", "n1","noNodes"));
 	}
 	
 	@Test
 	public void addEdgeTest(){
-		empty.addNode(n1, "n1");
-		empty.addNode(n2, "n2");
-		empty.addNode(n3, "n3");
-		// try one directional edges
-		assertEquals(empty.addEdge("n1", "n2"),Result.Success);
-		assertEquals(empty.addEdge("n1", "n3"),Result.Success);
-		assertEquals(empty.addEdge("n2", "n3"),Result.Success);
-		// check if it worked
-		assertEquals(empty.getChildrenString("n1"),String.format("the children of %s in %s are: %s %s", "n1","empty","n2","n3"));
-		assertEquals(empty.getChildrenString("n2"),String.format("the children of %s in %s are: %s", "n2","empty","n3"));
-		assertEquals(empty.getChildrenString("n3"),String.format("the children of %s in %s are:", "n3","empty"));
-		assertEquals(empty.getParentsString("n1"),String.format("the parents of %s in %s are:", "n1","empty"));
-		assertEquals(empty.getParentsString("n2"),String.format("the parents of %s in %s are: %s", "n2","empty","n1"));
-		assertEquals(empty.getParentsString("n3"),String.format("the parents of %s in %s are: %s %s", "n3","empty","n1","n2"));
-		// try a two directional edge
-		assertEquals(empty.addEdge("n2", "n1"),Result.Success);
-		// check if it worked
-		assertEquals(empty.getChildrenString("n1"),String.format("the children of %s in %s are: %s %s", "n1","empty","n2","n3"));
-		assertEquals(empty.getChildrenString("n2"),String.format("the children of %s in %s are: %s %s", "n2","empty","n1","n3"));
-		assertEquals(empty.getChildrenString("n3"),String.format("the children of %s in %s are:", "n3","empty"));
-		assertEquals(empty.getParentsString("n1"),String.format("the parents of %s in %s are: %s", "n1","empty","n2"));
-		assertEquals(empty.getParentsString("n2"),String.format("the parents of %s in %s are: %s", "n2","empty","n1"));
-		assertEquals(empty.getParentsString("n3"),String.format("the parents of %s in %s are: %s %s", "n3","empty","n1","n2"));
-		
+		noNodes.addNode(n1, "n1");
+		noNodes.addNode(n2, "n2");
+		noNodes.addNode(n3, "n3");
+
+		assertEquals(noNodes.addEdge("n2", "n3"),Result.Success);
+		assertEquals(noNodes.addEdge("n1", "n3"),Result.Success);
+		assertEquals(noNodes.addEdge("n1", "n2"),Result.Success);
+
+		assertEquals(noNodes.getChildrenString("n1"),String.format("the children of %s in %s are: %s %s", "n1","noNodes","n2","n3"));
+		assertEquals(noNodes.getChildrenString("n2"),String.format("the children of %s in %s are: %s", "n2","noNodes","n3"));
+		assertEquals(noNodes.getChildrenString("n3"),String.format("the children of %s in %s are:", "n3","noNodes"));
+		assertEquals(noNodes.getParentsString("n1"),String.format("the parents of %s in %s are:", "n1","noNodes"));
+		assertEquals(noNodes.getParentsString("n2"),String.format("the parents of %s in %s are: %s", "n2","noNodes","n1"));
+		assertEquals(noNodes.getParentsString("n3"),String.format("the parents of %s in %s are: %s %s", "n3","noNodes","n1","n2"));
+
+		assertEquals(noNodes.addEdge("n2", "n1"),Result.Success);
+
+		assertEquals(noNodes.getChildrenString("n3"),String.format("the children of %s in %s are:", "n3","noNodes"));
+		assertEquals(noNodes.getChildrenString("n1"),String.format("the children of %s in %s are: %s %s", "n1","noNodes","n2","n3"));
+		assertEquals(noNodes.getChildrenString("n2"),String.format("the children of %s in %s are: %s %s", "n2","noNodes","n1","n3"));
+		assertEquals(noNodes.getParentsString("n2"),String.format("the parents of %s in %s are: %s", "n2","noNodes","n1"));
+		assertEquals(noNodes.getParentsString("n1"),String.format("the parents of %s in %s are: %s", "n1","noNodes","n2"));
+		assertEquals(noNodes.getParentsString("n3"),String.format("the parents of %s in %s are: %s %s", "n3","noNodes","n1","n2"));
+
 	}
 	
 	@Test
 	public void getNodesString(){
 		// success 
 		// for - 0 runs
-		assertEquals(empty.getNodesString(),String.format("%s contains:","empty"));
+		assertEquals(noNodes.getNodesString(),String.format("%s contains:","noNodes"));
 		// for - 1 runs
-		empty.addNode(n1, "n1");
-		assertEquals(empty.getNodesString(),String.format("%s contains: %s","empty","n1"));
+		noNodes.addNode(n1, "n1");
+		assertEquals(noNodes.getNodesString(),String.format("%s contains: %s","noNodes","n1"));
 		// for - 2 runs
-		empty.addNode(n2, "n2");
-		assertEquals(empty.getNodesString(),String.format("%s contains: %s %s","empty","n1","n2"));
+		noNodes.addNode(n2, "n2");
+		assertEquals(noNodes.getNodesString(),String.format("%s contains: %s %s","noNodes","n1","n2"));
 	}
 	
 	@Test
 	public void getChildrenStringTest(){
-		// first if - node doesnt exist in graph
-		assertEquals(line.getChildrenString("n4"),null);
-		// success
-		// for - 0 runs
-		assertEquals(line.getChildrenString("n3"), String.format("the children of %s in %s are:", "n3","line"));
-		// for - 1 runs
-		assertEquals(line.getChildrenString("n2"), String.format("the children of %s in %s are: %s", "n2","line","n3"));
-		// for - 2 runs
-		assertEquals(line.getChildrenString("n1"), String.format("the children of %s in %s are: %s", "n1","line","n2"));
+		assertEquals(oneAfterAnother.getChildrenString("n4"),null);
+		assertEquals(oneAfterAnother.getChildrenString("n3"), String.format("the children of %s in %s are:", "n3","oneAfterAnother"));
+		assertEquals(oneAfterAnother.getChildrenString("n1"), String.format("the children of %s in %s are: %s", "n1","oneAfterAnother","n2"));
+		assertEquals(oneAfterAnother.getChildrenString("n2"), String.format("the children of %s in %s are: %s", "n2","oneAfterAnother","n3"));
 	}
 	
 	@Test
 	public void getParentsStringTest(){
-		// first if - node doesnt exist in graph
-		assertEquals(twoFathersTwoSons.getParentsString("n4"),null);
-		// success
-		// for - 0 runs
-		assertEquals(twoFathersTwoSons.getParentsString("n1"), String.format("the parents of %s in %s are:", "n1","twoFathersTwoSons"));
-		// for - 1 runs
-		assertEquals(twoFathersTwoSons.getParentsString("n2"), String.format("the parents of %s in %s are: %s", "n2","twoFathersTwoSons","n1"));
-		// for - 2 runs
-		assertEquals(twoFathersTwoSons.getParentsString("n3"), String.format("the parents of %s in %s are: %s %s", "n3","twoFathersTwoSons","n1","n2"));
+		assertEquals(fathers2Sons2.getParentsString("n4"),null);
+		assertEquals(fathers2Sons2.getParentsString("n3"), String.format("the parents of %s in %s are: %s %s", "n3","fathers2Sons2","n1","n2"));
+		assertEquals(fathers2Sons2.getParentsString("n1"), String.format("the parents of %s in %s are:", "n1","fathers2Sons2"));
+		assertEquals(fathers2Sons2.getParentsString("n2"), String.format("the parents of %s in %s are: %s", "n2","fathers2Sons2","n1"));
 	}
 	
 

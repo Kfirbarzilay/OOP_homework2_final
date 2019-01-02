@@ -83,11 +83,11 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
 		this.path = path;
 
 		if (path != null) {
-			//TODO: update the following line to support back edges
+			//TODO: update the following list to support back edges
 			this.cost = 1 + path.cost + node.getBackEdgesNum(); // before Hod's change:this.cost = 1 + path.cost;
 		}
 		else {
-			//TODO: update the following line to support back edges
+			//TODO: update the following list to support back edges
 			this.cost = 1 + node.getBackEdgesNum(); // before Hod's change: this.cost = 1;
 
 		}
